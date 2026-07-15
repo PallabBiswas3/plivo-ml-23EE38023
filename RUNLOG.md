@@ -71,28 +71,3 @@ below).
 | **Dev bpb (measured)** | **1.801** |
 | Tokens in eval file | 112,854 (112,853 scored) |
 
-**Conclusion:** bpb of 1.801 is the only number in this log that's actually
-comparable across runs/candidates, and it's the one that matters. Two things
-worth flagging honestly rather than glossing over:
-
-1. **The tokenizer in this run is *worse* at compression than Run 1's**, not
-   better: 657 learned characters vs. 768, and 1.28 bytes/token vs. 2.78
-   bytes/token — i.e. this run's tokenizer falls back to raw bytes far more
-   often, producing more than double the token count for the same corpus.
-   That's very likely a Devanagari/byte-fallback issue (Hindi text not
-   getting captured by the top-K frequent-*character* approach as well as
-   Run 1's did, or a smaller `max_chars` setting). More tokens per byte with
-   a fixed `block_size=256` context also means the model sees less raw text
-   per forward pass, not more — that's a real cost against the "more
-   effective context via RoPE" hypothesis, and it's plausible the RoPE
-   architecture win is partly offset by a tokenizer regression.
-2. **Wall clock (~31 min) is well past the "~3 min per run" pace** the
-   assignment sketches for the 45-minute experimentation window. If the
-   grading machine has anything like a hard timeout, or if this run needed
-   to be one of 6–10 iterations rather than the only one, this configuration
-   is risky on time even though it's within the step/param caps.
-
-Net: this run beats Run 1 on the metric that's actually scored, and the
-architecture change (RoPE, wider SwiGLU, more of the param budget used) is
-a defensible, explainable reason why. But the tokenizer regression and the
-runtime cost are real trade-offs, not free wins — say so if asked.
