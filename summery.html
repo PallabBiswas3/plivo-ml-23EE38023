@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LLM Speedrun: Final Summary</title>
+</head>
+<body>
+    <h1>LLM Speedrun: Final Summary</h1>
+    
+    <h3>Architecture</h3>
+    <ul>
+        <li><strong>Rotary Embeddings (RoPE):</strong> Enables efficient 256-token context management.</li>
+        <li><strong>SwiGLU & RMSNorm:</strong> Modern layers enhancing gradient throughput.</li>
+        <li><strong>Char-Byte Tokenizer:</strong> 1156-vocab; optimized for mixed Hindi-English text.</li>
+    </ul>
+
+    <h3>Strategy: Super-Convergence</h3>
+    <p>We bypassed hardware limitations using <strong>Gradient Accumulation</strong> (simulating an effective batch size of 16), combined with <strong>OneCycleLR</strong> for optimal step-wise convergence. Regularization via dropout and label smoothing prevents memorization of the training corpus.</p>
+
+    <h3>Effort Breakdown</h3>
+    <p><strong>Human (Architecture & Strategy):</strong> Engineered the LLaMA-style conversion, designed the gradient accumulation exploit, and tuned hyperparameters for CPU compatibility.</p>
+    <p><strong>Machine (Implementation):</strong> Generated RoPE/SwiGLU boilerplates, optimized tensor operations, and integrated the OneCycleLR scheduler.</p>
+    
+    <p><strong>Final BPB:</strong> 1.801 (1,946,496 Parameters)</p>
+</body>
+</html>
